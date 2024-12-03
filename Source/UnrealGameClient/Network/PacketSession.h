@@ -7,12 +7,14 @@
 /**
  * 
  */
-class UNREALGAMECLIENT_API PacketSession
+class UNREALGAMECLIENT_API PacketSession  : public TSharedFromThis<PacketSession>
 {
 public:
-	class Fsocket* Socket;
+	FSocket* Socket;
+	TQueue<TArray<uint8>> RecvPacketQueue;
+	TSharedPtr<class RecvWorker> RecvWorkerThread;
 public:
-	PacketSession();
+	PacketSession(class FSocket* Socket);
 	~PacketSession();
 public:
 	void Run();

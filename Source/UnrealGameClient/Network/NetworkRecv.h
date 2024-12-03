@@ -10,14 +10,16 @@
 class UNREALGAMECLIENT_API NetworkRecv : public NetworkHelper
 {
 public:
-	NetworkRecv(FSocket* socket);
+	//생성자 호출될때 PacketSession 주소 넣어줌
+	NetworkRecv(FSocket* _Socket, TSharedPtr<class PacketSession> _Session);
 	~NetworkRecv();
 public:
 	virtual bool Init() override;
 	virtual uint32 Run() override;
 	virtual void Exit() override;
 private:
-	//지정된 크기의 데이터 수신, 수신된 데이터는 Result에 저장
+
+	bool RecvPacket(TArray<uint8>& OutPacket);
 	bool RecvDesiredBytes(uint8* REsults, int32 size);
 
 };
