@@ -17,10 +17,13 @@ public:
 	class FSocket* Socket = nullptr;
 	FString IpAddress = TEXT("127.0.0.1");
 	int16 Port = 27015;
+	TSharedPtr<class PacketSession> ServerSession;
 public:
 	UFUNCTION(BlueprintCallable)
 	void ConnectToServer();
 	UFUNCTION(BlueprintCallable)
 	void DisconnectServer();
+	UFUNCTION(BlueprintCallable)
+	void HandleRecvPackets();
 
 };

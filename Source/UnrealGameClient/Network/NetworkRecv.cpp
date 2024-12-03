@@ -8,7 +8,6 @@
 
 NetworkRecv::NetworkRecv(FSocket* _Socket, TSharedPtr<class PacketSession> _Session)
 {	  
-	//Recv Thread 이름으로 이 객체를 실행할 새 스레드 생성
 	Thread = FRunnableThread::Create(this, TEXT("Recv Thread"));
 	Socket = _Socket;
 	Session = _Session;
@@ -31,17 +30,13 @@ uint32 NetworkRecv::Run()
 		TArray<uint8> Packet;
 		if (RecvPacket(OUT Packet))
 		{
-			//Session을 안전하게 들고 옴
-			//S 가 Null이라면 Session은 더이상 유효하지 않음
+
 			if (TSharedPtr<PacketSession> S = Session.Pin())
 			{
-				//Session 수신 패킷 큐에 수신된 패킷 추가
 				S->RecvPacketQueue.Dequeue(Packet);
 
 			}
 		}
-
-		
 	}
 
 	return 0;
@@ -49,6 +44,13 @@ uint32 NetworkRecv::Run()
 
 void NetworkRecv::Exit()
 {
+	//Todo
+}
+
+void NetworkRecv::Destroy()
+{
+	//while 루프 종료
+	Running = false;
 }
 
 bool NetworkRecv::RecvPacket(TArray<uint8>& OutPacket)

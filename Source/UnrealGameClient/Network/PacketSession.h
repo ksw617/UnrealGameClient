@@ -12,11 +12,18 @@ class UNREALGAMECLIENT_API PacketSession  : public TSharedFromThis<PacketSession
 public:
 	FSocket* Socket;
 	TQueue<TArray<uint8>> RecvPacketQueue;
-	TSharedPtr<class RecvWorker> RecvWorkerThread;
+	TQueue<TSharedPtr<class SendBuffer>> SendPacketQueue;
+	TSharedPtr<class NetworkRecv> RecvThread;
+	TSharedPtr<class NetworkSend> SendThread;
 public:
 	PacketSession(class FSocket* Socket);
 	~PacketSession();
 public:
 	void Run();
 	void Disconnect();
+public:
+	UFUNCTION(BlueprintCallable)
+	void HandleRecvPackets();
+	void SendPacket(TSharedPtr<class SendBuffer> SendBuffer);
+
 };
