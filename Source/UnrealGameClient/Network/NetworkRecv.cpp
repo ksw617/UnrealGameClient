@@ -3,9 +3,7 @@
 
 #include "Network/NetworkRecv.h"
 
-NetworkRecv::NetworkRecv()
-{
-}
+
 
 NetworkRecv::NetworkRecv(FSocket* socket)
 {
