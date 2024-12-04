@@ -7,10 +7,11 @@
 #include "PacketSession.h"
 
 NetworkRecv::NetworkRecv(FSocket* _Socket, TSharedPtr<class PacketSession> _Session)
-{	  
-	Thread = FRunnableThread::Create(this, TEXT("Recv Thread"));
+{
 	Socket = _Socket;
 	Session = _Session;
+	Thread = FRunnableThread::Create(this, TEXT("Recv Thread"));
+	
 }
 
 NetworkRecv::~NetworkRecv()

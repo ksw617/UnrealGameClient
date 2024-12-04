@@ -32,7 +32,7 @@ class UNREALGAMECLIENT_API NetworkHelper : public FRunnable
 protected:
 	FRunnableThread* Thread = nullptr;
 	bool Running = true;
-	FSocket* Socket;
+	class FSocket* Socket = nullptr;
 	TWeakPtr<class PacketSession> Session;
 
 };

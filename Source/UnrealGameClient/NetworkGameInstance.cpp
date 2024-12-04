@@ -23,17 +23,14 @@ void UNetworkGameInstance::ConnectToServer()
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connect to Server")));
 
-	//서버에 연결 시도
 	bool Connected = Socket->Connect(*InternetAddr);
 
 	if (Connected)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Connection Success")));
 
-		//PacketSession 생성 Socket 넘겨줌
 		ServerSession = MakeShared<PacketSession>(Socket);
 
-		//Run 실행
 		ServerSession->Run();
 
 	}
@@ -56,10 +53,17 @@ void UNetworkGameInstance::DisconnectServer()
 
 void UNetworkGameInstance::HandleRecvPackets()
 {
-	//소켓이나 서버 세션이 없는 경우 함수 종료
+
 	if (Socket == nullptr || ServerSession == nullptr)
 		return;
 
-	//서버 세션을 통해 수신된 패킷을 처리
 	ServerSession->HandleRecvPackets();
+}
+
+void UNetworkGameInstance::SendPacket(TSharedPtr<class SendBuffer> SendBuffer)
+{
+	if (Socket == nullptr || ServerSession == nullptr)
+		return;
+
+	ServerSession->SendPacket(SendBuffer);
 }

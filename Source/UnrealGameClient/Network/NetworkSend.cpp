@@ -8,9 +8,10 @@
 
 NetworkSend::NetworkSend(FSocket* _Socket, TSharedPtr<PacketSession> _Session)
 {
-    Thread = FRunnableThread::Create(this, TEXT("Send Thread"));
     Socket = _Socket;
     Session = _Session;
+    Thread = FRunnableThread::Create(this, TEXT("Send Thread"));
+
 }
 
 NetworkSend::~NetworkSend()

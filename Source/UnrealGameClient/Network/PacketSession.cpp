@@ -4,13 +4,19 @@
 #include "Network/PacketSession.h"
 #include "NetworkRecv.h"
 #include "NetworkSend.h"
+#include "ServerPacketHandler.h"
 
 PacketSession::PacketSession(FSocket* _Socket) : Socket(_Socket)
 {
+	//초기화
+	ServerPacketHandler::Init();
+	
 }
 
 PacketSession::~PacketSession()
 {
+	//연결끊기
+	Disconnect();
 }
 
 void PacketSession::Run()
@@ -28,7 +34,8 @@ void PacketSession::HandleRecvPackets()
 		if (!RecvPacketQueue.Dequeue(OUT Packet))
 			break;
 
-		//Todo
+		TSharedPtr<PacketSession> MySession = AsShared();
+		ServerPacketHandler::HandlePacket(MySession, Packet.GetData(), Packet.Num());
 	}
 }
 
