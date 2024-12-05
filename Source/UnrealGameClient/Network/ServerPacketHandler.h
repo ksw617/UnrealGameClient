@@ -14,25 +14,22 @@ enum : uint16
 {
 	C_LOGIN = 1000,
 	S_LOGIN = 1001,
-	C_REGISTER = 1002,
-	S_REGISTER = 1003,
-	C_ENTERGAME = 1004,
-	S_ENTERGAME = 1005,
-	C_ENTERROOM = 1006,
-	S_ENTERROOM = 1007,
-	S_ENTERNEWBIE = 1008,
-	C_CHAT = 1009,
-	S_CHAT = 1010,
+	C_ENTER_GAME = 1004,
+	S_ENTER_GAME = 1005,
+	S_SPAWN = 1006,
+	S_DESPAWN = 1007,
+	C_LOGOUT = 1008,
+	C_MOVE = 1009,
+	S_MOVE = 1010,
 };
 
 bool Handle_INVALID(TSharedPtr<PacketSession>& session, BYTE* buffer, int len);
 
-bool Handle_S_LOGIN(TSharedPtr<PacketSession>& session, Protocol::S_Login& packet);
-bool Handle_S_REGISTER(TSharedPtr<PacketSession>& session, Protocol::S_Register& packet);
-bool Handle_S_ENTERGAME(TSharedPtr<PacketSession>& session, Protocol::S_EnterGame& packet);
-bool Handle_S_ENTERROOM(TSharedPtr<PacketSession>& session, Protocol::S_EnterRoom& packet);
-bool Handle_S_ENTERNEWBIE(TSharedPtr<PacketSession>& session, Protocol::S_EnterNewbie& packet);
-bool Handle_S_CHAT(TSharedPtr<PacketSession>& session, Protocol::S_Chat& packet);
+bool Handle_S_LOGIN(TSharedPtr<PacketSession>& session, Protocol::S_LOGIN& packet);
+bool Handle_S_ENTER_GAME(TSharedPtr<PacketSession>& session, Protocol::S_ENTER_GAME& packet);
+bool Handle_S_SPAWN(TSharedPtr<PacketSession>& session, Protocol::S_SPAWN& packet);
+bool Handle_S_DESPAWN(TSharedPtr<PacketSession>& session, Protocol::S_DESPAWN& packet);
+bool Handle_S_MOVE(TSharedPtr<PacketSession>& session, Protocol::S_MOVE& packet);
 
 
 class ServerPacketHandler : public PacketHandler
@@ -44,11 +41,10 @@ public:
 	static void Init();
 	static bool HandlePacket(TSharedPtr<PacketSession>& session, BYTE* buffer, int len);
 public:
-	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_Login& packet) { return MakeSendBuffer(packet, C_LOGIN); }
-	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_Register& packet) { return MakeSendBuffer(packet, C_REGISTER); }
-	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_EnterGame& packet) { return MakeSendBuffer(packet, C_ENTERGAME); }
-	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_EnterRoom& packet) { return MakeSendBuffer(packet, C_ENTERROOM); }
-	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_Chat& packet) { return MakeSendBuffer(packet, C_CHAT); }
+	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_LOGIN& packet) { return MakeSendBuffer(packet, C_LOGIN); }
+	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_ENTER_GAME& packet) { return MakeSendBuffer(packet, C_ENTER_GAME); }
+	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_LOGOUT& packet) { return MakeSendBuffer(packet, C_LOGOUT); }
+	static TSharedPtr<SendBuffer> MakeSendBuffer(Protocol::C_MOVE& packet) { return MakeSendBuffer(packet, C_MOVE); }
 
 protected:
     template<typename PacketType, typename ProcessFunc>

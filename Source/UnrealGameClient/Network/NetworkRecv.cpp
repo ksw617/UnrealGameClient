@@ -105,8 +105,6 @@ bool NetworkRecv::RecvDesiredBytes(uint8* REsults, int32 Size)
 			return false;
 
 		offset += NumRead;					 
-											
-
 		Size -= NumRead;
 
 	}

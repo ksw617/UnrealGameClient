@@ -15,22 +15,19 @@ void ServerPacketHandler::Init()
 
 	//Recv
 	packetHandlers[S_LOGIN] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
-		{  return HandlePacket<Protocol::S_Login>(Handle_S_LOGIN, session, buffer, len); };
+		{  return HandlePacket<Protocol::S_LOGIN>(Handle_S_LOGIN, session, buffer, len); };
 
-	packetHandlers[S_REGISTER] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
-		{  return HandlePacket<Protocol::S_Register>(Handle_S_REGISTER, session, buffer, len); 	};
+	packetHandlers[S_ENTER_GAME] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
+		{  return HandlePacket<Protocol::S_ENTER_GAME>(Handle_S_ENTER_GAME, session, buffer, len); 	};
 
-	packetHandlers[S_ENTERGAME] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
-		{  return HandlePacket<Protocol::S_EnterGame>(Handle_S_ENTERGAME, session, buffer, len); };
+	packetHandlers[S_SPAWN] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
+		{  return HandlePacket<Protocol::S_SPAWN>(Handle_S_SPAWN, session, buffer, len); };
 
-	packetHandlers[S_ENTERROOM] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
-		{  return HandlePacket<Protocol::S_EnterRoom>(Handle_S_ENTERROOM, session, buffer, len); };
+	packetHandlers[S_DESPAWN] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
+		{  return HandlePacket<Protocol::S_DESPAWN>(Handle_S_DESPAWN, session, buffer, len); };
 
-	packetHandlers[S_ENTERNEWBIE] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
-		{  return HandlePacket<Protocol::S_EnterNewbie>(Handle_S_ENTERNEWBIE, session, buffer, len); };
-
-	packetHandlers[S_CHAT] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
-		{  return HandlePacket<Protocol::S_Chat>(Handle_S_CHAT, session, buffer, len); };
+	packetHandlers[S_MOVE] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
+		{  return HandlePacket<Protocol::S_MOVE>(Handle_S_MOVE, session, buffer, len); };
 }
 
 bool ServerPacketHandler::HandlePacket(TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
@@ -47,32 +44,39 @@ bool Handle_INVALID(TSharedPtr<PacketSession>& session, BYTE* buffer, int len)
 	return false;
 }
 
-bool Handle_S_LOGIN(TSharedPtr<PacketSession>& session, Protocol::S_Login& packet)
+bool Handle_S_LOGIN(TSharedPtr<PacketSession>& session, Protocol::S_LOGIN& packet)
+{
+
+
+	if (packet.success())
+	{
+		
+		Protocol::C_ENTER_GAME sendPacket;
+		sendPacket.set_playerid(1);
+
+		TSharedPtr<SendBuffer> SendBuffer = ServerPacketHandler::MakeSendBuffer(sendPacket);
+		session->SendPacket(SendBuffer);
+	}
+
+	return true;
+}
+
+bool Handle_S_ENTER_GAME(TSharedPtr<PacketSession>& session, Protocol::S_ENTER_GAME& packet)
 {
 	return false;
 }
 
-bool Handle_S_REGISTER(TSharedPtr<PacketSession>& session, Protocol::S_Register& packet)
+bool Handle_S_SPAWN(TSharedPtr<PacketSession>& session, Protocol::S_SPAWN& packet)
 {
 	return false;
 }
 
-bool Handle_S_ENTERGAME(TSharedPtr<PacketSession>& session, Protocol::S_EnterGame& packet)
+bool Handle_S_DESPAWN(TSharedPtr<PacketSession>& session, Protocol::S_DESPAWN& packet)
 {
 	return false;
 }
 
-bool Handle_S_ENTERROOM(TSharedPtr<PacketSession>& session, Protocol::S_EnterRoom& packet)
-{
-	return false;
-}
-
-bool Handle_S_ENTERNEWBIE(TSharedPtr<PacketSession>& session, Protocol::S_EnterNewbie& packet)
-{
-	return false;
-}
-
-bool Handle_S_CHAT(TSharedPtr<PacketSession>& session, Protocol::S_Chat& packet)
+bool Handle_S_MOVE(TSharedPtr<PacketSession>& session, Protocol::S_MOVE& packet)
 {
 	return false;
 }

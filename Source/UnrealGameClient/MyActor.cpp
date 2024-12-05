@@ -18,17 +18,13 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 }
 
 // Called every frame
 void AMyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	Protocol::C_Chat Msg;
-	Msg.set_msg("Hello world");
-	TSharedPtr<SendBuffer> SendBuffer = ServerPacketHandler::MakeSendBuffer(Msg);
-	Cast<UNetworkGameInstance>(GetGameInstance())->SendPacket(SendBuffer);
 
 }
 

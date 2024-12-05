@@ -6,7 +6,8 @@
 #include "Common/TcpSocketBuilder.h"
 #include "Serialization/ArrayWriter.h"
 #include "SocketSubsystem.h"
-#include "Network/PacketSession.h"  // 추가
+#include "Network/PacketSession.h" 
+#include "Network/ServerPacketHandler.h" //추가
 
 
 void UNetworkGameInstance::ConnectToServer()
@@ -32,6 +33,11 @@ void UNetworkGameInstance::ConnectToServer()
 		ServerSession = MakeShared<PacketSession>(Socket);
 
 		ServerSession->Run();
+
+	
+		Protocol::C_LOGIN sendPacket;
+		TSharedPtr<SendBuffer> SendBuffer = ServerPacketHandler::MakeSendBuffer(sendPacket);
+		SendPacket(SendBuffer);
 
 	}
 	else
